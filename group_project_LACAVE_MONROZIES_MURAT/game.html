@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Launcher</title>
+    <link rel="stylesheet" href="game.css">
+    <!-- Permet des charger une police et des logos-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.295.0/font/lucide.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Game Launcher</h1>
+        <div class="games-menu">
+            <!-- Permet de se rendre sur la page du tic tac toe-->
+            <button onclick="window.location.href='tic-tac-toe.html'">
+                <i class="fas fa-th fa-fw"></i> Tic-Tac-Toe
+            </button>
+            <!-- Permet de se rendre sur la page du rsp-->
+            <button onclick="window.location.href='rsp.html'">
+                <i class="fas fa-hand-rock fa-fw"></i> Rock Scissors Paper
+            </button>
+            <!-- Permet de se rendre sur la page du snake-->
+            <button onclick="window.location.href='snake.html'">
+                <i class="fas fa-staff-snake fa-fw"></i> Snake
+            </button>
+        </div>
+        <div class="footer">
+            <a href="about.html"><i class="fas fa-info-circle"></i> About Us</a>
+        </div>
+    </div>
+    <!-- Partie du code en JS pour afficher les statistiques-->
+    <script>
+        // Vérifie si des parties ont été jouées avant
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem("ticTacToeScores") || 
+                localStorage.getItem("rspScores") || 
+                localStorage.getItem("snakeHighScore")) {
+                
+                // Si oui, on ajoute les stats en appellant les fonction getsummary qui récupère les stats de chaque jeu
+                const footer = document.querySelector('.footer');
+                const statsDiv = document.createElement('div');
+                statsDiv.className = 'stats-summary';
+                statsDiv.innerHTML = `
+                    <p>Your Game Stats:</p>
+                    <div class="stats-grid">
+                        ${getSummaryStats()}
+                    </div>
+                `;
+                // affiche les stats
+                footer.insertAdjacentElement('beforebegin', statsDiv);
+            }
+        });
+        
+        // Fonction qui récupère les stats
+        function getSummaryStats() {
+            let statsHTML = '';
+            
+            // Tic-Tac-Toe stats
+            const tttScores = localStorage.getItem("ticTacToeScores");
+            if (tttScores) {
+                const scores = JSON.parse(tttScores);
+                statsHTML += `
+                    <div class="stat-item">
+                        <i class="fas fa-th"></i>
+                        <span>X: ${scores.playerX} | O: ${scores.playerO}</span>
+                    </div>
+                `;
+            }
+            
+            // RSP stats
+            const rspScores = localStorage.getItem("rspScores");
+            if (rspScores) {
+                const scores = JSON.parse(rspScores);
+                statsHTML += `
+                    <div class="stat-item">
+                        <i class="fas fa-hand-rock"></i>
+                        <span>You: ${scores.player} | PC: ${scores.computer}</span>
+                    </div>
+                `;
+            }
+            
+            // Snake stats
+            const snakeScore = localStorage.getItem("snakeHighScore");
+            if (snakeScore) {
+                statsHTML += `
+                    <div class="stat-item">
+                        <i class="fas fa-snake"></i>
+                        <span>High Score: ${snakeScore}</span>
+                    </div>
+                `;
+            }
+            
+            return statsHTML;
+        }
+    </script>
+</body>
+</html>
