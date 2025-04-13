@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <link rel="stylesheet" href="game.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+
+    <h1>Snake Game</h1>
+
+    <div class="score-board">
+        <div class="score-item">
+            <div class="score-label">Score</div>
+            <div class="score-value" id="score">0</div>
+        </div>
+        <div class="score-item">
+            <div class="score-label">High Score</div>
+            <div class="score-value" id="high-score">0</div>
+        </div>
+        <div class="score-item">
+            <div class="score-label">Streak</div>
+            <div class="score-value" id="streak">0</div>
+        </div>
+    </div>
+
+    <div id="game-status" class="game-status">Press Space to Start/Pause</div>
+
+    <div class="settings-panel">
+        <div class="settings-row">
+            <div class="settings-label">Difficulty:</div>
+            <div class="speed-control">
+                <button id="speed-easy" class="speed-btn">Easy</button>
+                <button id="speed-medium" class="speed-btn active">Medium</button>
+                <button id="speed-hard" class="speed-btn">Hard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas pour le rendu du jeu -->
+    <canvas id="game-canvas" width="400" height="400"></canvas>
+
+    <!-- Contrôles tactiles pour appareils mobiles -->
+    <div class="game-controls">
+        <button class="control-button" id="up-btn"><i class="fas fa-arrow-up"></i></button>
+        <div style="display: flex; gap: 1rem;">
+            <button class="control-button" id="left-btn"><i class="fas fa-arrow-left"></i></button>
+            <button class="control-button" id="down-btn"><i class="fas fa-arrow-down"></i></button>
+            <button class="control-button" id="right-btn"><i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <div class="controls">
+        <p><i class="fas fa-keyboard"></i> Controls: Use Arrow Keys or WASD to move, Space to Start/Pause</p>
+    </div>
+
+    <div class="button-group">
+        <button id="reset-game"><i class="fas fa-redo-alt"></i> Reset Game</button>
+        <button class="back-button" onclick="window.location.href='game.html'">
+            <i class="fas fa-home"></i> Back to Menu
+        </button>
+    </div>
+
+    <!-- Écran de Game Over -->
+    <div class="game-over-screen" id="game-over-screen">
+        <h2 class="game-over-title">Game Over!</h2>
+        <p class="game-over-score">Score: <span id="final-score">0</span></p>
+        <button class="play-again-btn" id="play-again-btn">Play Again</button>
+    </div>
+</div>
+<script src="snake.js"></script>
+</body>
+</html>
