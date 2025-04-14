@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function addStyles() {
     const style = document.createElement('style');
     style.textContent = `
+     /* Styles pour l'arène de jeu (zones de combat) */
         .battle-arena {
             display: flex;
             justify-content: space-between;
@@ -24,14 +25,14 @@ function addStyles() {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             min-height: 120px;
         }
-        
+        /* Styles pour les côtés du joueur et de l'ordinateur */
         .player-side, .computer-side {
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 40%;
         }
-        
+        /* Styles pour les avatars du joueur et de l'ordinateur */
         .player-avatar, .computer-avatar {
             background-color: var(--primary-color);
             color: white;
@@ -43,13 +44,13 @@ function addStyles() {
             align-items: center;
             margin-bottom: 10px;
         }
-        
+         /* Styles pour le texte "Versus" entre les deux côtés */
         .versus {
             font-weight: 700;
             font-size: 1.2rem;
             color: var(--accent-color);
         }
-        
+        * Styles pour l'affichage des choix du joueur et de l'ordinateur */
         .choice-display {
             font-size: 3rem;
             min-height: 60px;
@@ -57,20 +58,20 @@ function addStyles() {
             justify-content: center;
             align-items: center;
         }
-        
+        /* Styles pour l'étiquette de chaque choix */
         .choice-label {
             display: block;
             margin-top: 0.5rem;
             font-size: 0.8rem;
             color: var(--gray-dark);
         }
-        
+          /* Conteneur pour chaque choix (rocher, papier, ciseaux) */
         .choice {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-        
+        /* Styles pour la série de victoires du joueur */
         .streak-container {
             display: flex;
             align-items: center;
@@ -81,66 +82,66 @@ function addStyles() {
             border-radius: var(--border-radius);
             background-color: var(--gray-light);
         }
-        
+         /* Styles pour l'étiquette de la série */
         .streak-label {
             font-size: 0.9rem;
             color: var(--gray-dark);
         }
-        
+        /* Styles pour le compteur de série */
         .streak-counter {
             font-weight: 700;
             font-size: 1.2rem;
             color: var(--primary-color);
         }
-        
+        /* Animation de secousse pour les éléments */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
             20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
-        
+        /* Application de l'animation de secousse */
         .shake {
             animation: shake 0.5s ease-in-out;
         }
-        
+        /* Animation pour l'effet d'apparition (fadeIn) */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+         /* Application de l'animation fadeIn */
         .fade-in {
             animation: fadeIn 0.3s ease-in-out;
         }
-        
+        /* Groupe de boutons pour les choix */
         .button-group {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
             margin-top: 1rem;
         }
-        
+        /* Styles pour le choix sélectionné */
         .selected {
             background-color: var(--success-color);
             transform: scale(1.1);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        
+        /* Mise en évidence du gagnant */
         .winner-highlight {
             box-shadow: 0 0 15px var(--success-color);
             animation: pulse 1s infinite;
         }
-        
+        /* Mise en évidence du perdant */
         .loser-highlight {
             opacity: 0.7;
         }
-        
+          /* Animation du compte à rebours avant le choix */
         @keyframes countdown {
             0% { transform: scale(1.5); opacity: 0; }
             20% { transform: scale(1); opacity: 1; }
             80% { transform: scale(1); opacity: 1; }
             100% { transform: scale(0.5); opacity: 0; }
         }
-        
+        /* Style pour le compte à rebours avant le choix */
         .countdown {
             position: absolute;
             top: 50%;
