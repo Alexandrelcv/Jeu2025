@@ -1,20 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize database for storing game scores
+    // Initialiser la base de données pour stocker les scores de jeu
     initDatabase();
     
-    // Start the Tic-Tac-Toe game
+    // Démarrer le jeu de morpion (Tic-Tac-Toe)
     startTicTacToe();
 });
 
-// Initialize the database
+// Initialiser la base de données
 function initDatabase() {
-    // Check if localStorage is supported
+    // Vérifier si localStorage est pris en charge
     if (typeof(Storage) === "undefined") {
-        console.error("localStorage is not supported by your browser!");
+        console.error("localStorage n'est pas pris en charge par votre navigateur !");
         return;
     }
     
-    // Initialize scores in localStorage if they don't exist
+    // Initialiser les scores dans localStorage s'ils n'existent pas
     if (localStorage.getItem("ticTacToeScores") === null) {
         const scores = {
             playerX: 0,
@@ -23,18 +23,18 @@ function initDatabase() {
         localStorage.setItem("ticTacToeScores", JSON.stringify(scores));
     }
     
-    // Update the score display
+    // Mettre à jour l'affichage des scores
     updateScoreDisplay();
 }
 
-// Update score display from localStorage
+// Mettre à jour l'affichage des scores à partir de localStorage
 function updateScoreDisplay() {
     const scores = JSON.parse(localStorage.getItem("ticTacToeScores"));
     document.getElementById("score-x").textContent = scores.playerX;
     document.getElementById("score-o").textContent = scores.playerO;
 }
 
-// Function to update the score in localStorage
+// Fonction pour mettre à jour le score dans localStorage
 function updateScore(winner) {
     const scores = JSON.parse(localStorage.getItem("ticTacToeScores"));
     
@@ -61,14 +61,14 @@ function startTicTacToe() {
     let gameActive = true;
     let winningCells = [];
     
-    // Create the game board cells
+    // Créer les cases du plateau de jeu
     for (let i = 0; i < 9; i++) {
         const cell = document.createElement("div");
         cell.classList.add("cell");
         cell.setAttribute("data-cell-index", i);
         cell.addEventListener("click", () => handleCellClick(cell));
         
-        // Add hover effect to show current player's mark
+        // Ajouter un effet de survol pour afficher le symbole du joueur actuel
         cell.addEventListener("mouseenter", () => {
             if (gameState[i] === "" && gameActive) {
                 cell.innerHTML = `<span style="opacity: 0.3">${currentPlayer}</span>`;
@@ -84,49 +84,49 @@ function startTicTacToe() {
         board.appendChild(cell);
     }
     
-    // Function to handle cell clicks
+    // Fonction pour gérer les clics sur une case
     function handleCellClick(clickedCell) {
         const cellIndex = parseInt(clickedCell.getAttribute("data-cell-index"));
         
-        // Check if cell is already played or game is not active
+        // Vérifier si la case est déjà jouée ou si le jeu est terminé
         if (gameState[cellIndex] !== "" || !gameActive) {
             return;
         }
         
-        // Update the game state with the current player's mark
+        // Mettre à jour l'état du jeu avec le symbole du joueur actuel
         gameState[cellIndex] = currentPlayer;
         clickedCell.innerHTML = currentPlayer;
         
-        // Add a little animation to the placed mark
+        // Ajouter une petite animation au symbole placé
         clickedCell.classList.add("placed");
         setTimeout(() => {
             clickedCell.classList.remove("placed");
         }, 300);
         
-        // Check if someone won or the game is a draw
+        // Vérifier si quelqu’un a gagné ou si le jeu est un match nul
         if (checkWinner()) {
-            statusDisplay.innerHTML = `<span class="result-animation result-win">Player ${currentPlayer} wins!</span>`;
+            statusDisplay.innerHTML = `<span class="result-animation result-win">Joueur ${currentPlayer} a gagné !</span>`;
             statusDisplay.classList.add("winner");
             gameActive = false;
             updateScore(currentPlayer);
             
-            // Highlight the winning cells
+            // Mettre en surbrillance les cases gagnantes
             highlightWinningCells();
             return;
         }
         
         if (isDraw()) {
-            statusDisplay.innerHTML = `<span class="result-animation result-draw">Game ended in a draw!</span>`;
+            statusDisplay.innerHTML = `<span class="result-animation result-draw">Match nul !</span>`;
             gameActive = false;
             return;
         }
         
-        // Switch players
+        // Changer de joueur
         currentPlayer = currentPlayer === "X" ? "O" : "X";
-        statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+        statusDisplay.textContent = `Au tour du joueur ${currentPlayer}`;
     }
     
-    // Function to highlight winning cells
+    // Fonction pour mettre en surbrillance les cases gagnantes
     function highlightWinningCells() {
         const cells = document.querySelectorAll(".cell");
         winningCells.forEach(index => {
@@ -134,12 +134,12 @@ function startTicTacToe() {
         });
     }
     
-    // Function to check for a winner
+    // Fonction pour vérifier s’il y a un gagnant
     function checkWinner() {
         const winPatterns = [
-            [0, 1, 2], [3, 4, 5], [6, 7, 8],  // rows
-            [0, 3, 6], [1, 4, 7], [2, 5, 8],  // columns
-            [0, 4, 8], [2, 4, 6]              // diagonals
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],  // lignes
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],  // colonnes
+            [0, 4, 8], [2, 4, 6]              // diagonales
         ];
         
         for (const pattern of winPatterns) {
@@ -153,18 +153,18 @@ function startTicTacToe() {
         return false;
     }
     
-    // Function to check if the game is a draw
+    // Fonction pour vérifier si la partie est un match nul
     function isDraw() {
         return gameState.every(cell => cell !== "");
     }
     
-    // Function to reset the game
+    // Fonction pour réinitialiser la partie
     function resetGame() {
-        // Add a small delay to allow for better transition
+        // Ajouter un petit délai pour une meilleure transition
         if (!gameActive) {
             statusDisplay.classList.remove("winner");
             
-            // Clear winning cells highlight
+            // Supprimer la surbrillance des cases gagnantes
             if (winningCells.length > 0) {
                 const cells = document.querySelectorAll(".cell");
                 winningCells.forEach(index => {
@@ -177,9 +177,9 @@ function startTicTacToe() {
         gameState = ["", "", "", "", "", "", "", "", ""];
         currentPlayer = "X";
         gameActive = true;
-        statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+        statusDisplay.textContent = `Au tour du joueur ${currentPlayer}`;
         
-        // Clear cells with a fade effect
+        // Effacer les cases avec un effet fondu
         document.querySelectorAll(".cell").forEach(cell => {
             cell.classList.add("fade-out");
             setTimeout(() => {
@@ -189,22 +189,22 @@ function startTicTacToe() {
         });
     }
     
-    // Add event listener to reset button
+    // Ajouter un écouteur d’événement au bouton de réinitialisation
     resetButton.addEventListener("click", resetGame);
     
-    // Add keyboard shortcuts
+    // Ajouter des raccourcis clavier
     document.addEventListener("keydown", function(event) {
-        // Press 'R' to reset the game
+        // Appuyer sur 'R' pour réinitialiser la partie
         if (event.key === "r" || event.key === "R") {
             resetGame();
         }
         
-        // Press 'Esc' to go back to the menu
+        // Appuyer sur 'Échap' pour revenir au menu
         if (event.key === "Escape") {
             window.location.href = 'game.html';
         }
         
-        // Number keys 1-9 to make moves (numpad layout)
+        // Touches numériques 1-9 pour jouer (disposition du pavé numérique)
         const numpadMapping = {
             "7": 0, "8": 1, "9": 2,
             "4": 3, "5": 4, "6": 5,
@@ -221,7 +221,7 @@ function startTicTacToe() {
     });
 }
 
-// Add these styles to support the new features
+// Ajouter ces styles pour prendre en charge les nouvelles fonctionnalités
 document.addEventListener('DOMContentLoaded', function() {
     const style = document.createElement('style');
     style.textContent = `
