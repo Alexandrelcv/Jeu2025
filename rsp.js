@@ -156,15 +156,14 @@ function addStyles() {
     document.head.appendChild(style);// Injecte les styles dans la tête du document HTML
 }
 
-// Initialize the database
+// Fonction pour initialiser les données du jeu dans localStorage si elles n'existent pas
 function initDatabase() {
-    // Check if localStorage is supported
     if (typeof(Storage) === "undefined") {
         console.error("localStorage is not supported by your browser!");
         return;
     }
     
-    // Initialize scores in localStorage if they don't exist
+    // Initialise les score s'ils n'ont pas encore été enregistrés
     if (localStorage.getItem("rspScores") === null) {
         const scores = {
             player: 0,
@@ -175,11 +174,10 @@ function initDatabase() {
         localStorage.setItem("rspScores", JSON.stringify(scores));
     }
     
-    // Update the score display
     updateScoreDisplay();
 }
 
-// // Fonction pour afficher les scores actuels du joueur et de l'ordinateur
+// Fonction pour afficher les scores actuels du joueur et de l'ordinateur
 function updateScoreDisplay() {
     const scores = JSON.parse(localStorage.getItem("rspScores"));
     document.getElementById("player-score").textContent = scores.player;
@@ -200,7 +198,7 @@ function updateScore(winner) {
         }
     } else if (winner === "computer") {
         scores.computer += 1;
-        scores.streak = 0; // Remetles compteurs à si perte
+        scores.streak = 0; // Remet les compteurs à 0 si perte
     }
     
     localStorage.setItem("rspScores", JSON.stringify(scores));
@@ -220,34 +218,33 @@ function setupGame() {
     
     let isAnimating = false;
     
-    // Add event listeners to the choices
+    // Ajouter des écouteurs d'événements pour chaque choix (pierre, papier, ciseaux
     choices.forEach(choice => {
         choice.addEventListener('click', function() {
-            // Prevent clicking during animations
+            // Empêcher les clics pendant les animations
             if (isAnimating) return;
             isAnimating = true;
             
-            // Reset previous selections and results
+             // Réinitialiser les choix précédents et le résultat affiché
             resetSelections();
             
-            // Highlight selected choice
+            // Mettre en surbrillance le choix sélectionné
             this.classList.add('selected');
             
-            // Get player's choice
+             // Récupérer le choix du joueur
             const playerChoice = this.id;
             
-            // Start the "Rock, Paper, Scissors" countdown
+            // Lancer le compte à rebours "Pierre, Feuille, Ciseaux"
             playCountdown().then(() => {
-                // Get computer's choice
                 const computerChoice = getComputerChoice();
                 
-                // Show both choices in the battle arena
+               
                 displayChoices(playerChoice, computerChoice);
                 
-                // Determine the winner
+                
                 const gameResult = determineWinner(playerChoice, computerChoice);
                 
-                // Display the result after a short delay
+                
                 setTimeout(() => {
                     showResult(playerChoice, computerChoice, gameResult);
                     isAnimating = false;
@@ -256,7 +253,7 @@ function setupGame() {
         });
     });
     
-    // Add event listener to reset button
+    // Ajouter un écouteur d'événement au bouton de réinitialisation
     resetButton.addEventListener('click', function() {
         if (isAnimating) return;
         
@@ -267,7 +264,7 @@ function setupGame() {
         computerChoiceDisplay.innerHTML = "";
     });
     
-    // Add keyboard shortcuts
+    // Ajouter des raccourcis clavier
     document.addEventListener('keydown', function(event) {
         if (isAnimating) return;
         
@@ -285,7 +282,7 @@ function setupGame() {
         }
     });
     
-    // Function to display the countdown animation
+    // Fonction qui lance l'animation du compte à rebours
     function playCountdown() {
         return new Promise(resolve => {
             const countdownElements = ['Rock', 'Paper', 'Scissors', 'Shoot!'];
@@ -297,13 +294,13 @@ function setupGame() {
                     return;
                 }
                 
-                // Create and show countdown element
+                // Créer et afficher l’élément de compte à rebours
                 const countdownEl = document.createElement('div');
                 countdownEl.className = 'countdown';
                 countdownEl.textContent = countdownElements[index];
                 document.body.appendChild(countdownEl);
                 
-                // Remove after animation completes
+                 // Supprimer l’élément après un court délai
                 setTimeout(() => {
                     document.body.removeChild(countdownEl);
                     index++;
@@ -315,11 +312,11 @@ function setupGame() {
         });
     }
     
-    // Function to reset selections
+    // Fonction pour réinitialiser les choix précédents
     function resetSelections() {
         choices.forEach(c => c.classList.remove('selected'));
         
-        // Reset highlights in the battle arena
+        // Réinitialiser les couleurs de victoire/défaite dans l’arène
         const playerSide = document.querySelector('.player-side');
         const computerSide = document.querySelector('.computer-side');
         
@@ -327,27 +324,27 @@ function setupGame() {
         computerSide.classList.remove('winner-highlight', 'loser-highlight');
     }
     
-    // Function to display choices in the battle arena
+    // Fonction pour afficher les choix dans l’arène de combat
     function displayChoices(playerChoice, computerChoice) {
-        // Map choices to emojis or icons
+        // Associer les choix à des icônes
         const iconMap = {
             'rock': '<i class="fas fa-hand-rock fa-3x"></i>',
             'paper': '<i class="fas fa-hand-paper fa-3x"></i>',
             'scissors': '<i class="fas fa-hand-scissors fa-3x"></i>'
         };
         
-        // Display player choice with animation
+        // Afficher le choix du joueur avec une animation
         playerChoiceDisplay.innerHTML = iconMap[playerChoice];
         playerChoiceDisplay.classList.add('fade-in');
         
-        // Display computer choice with animation
+        // Afficher le choix de l'ordinateur avec une animation
         computerChoiceDisplay.innerHTML = iconMap[computerChoice];
         computerChoiceDisplay.classList.add('fade-in');
         
-        // Add shake animation to the battle arena
+        // Animation de tremblement de l’arène
         battleArena.classList.add('shake');
         
-        // Remove animations after they complete
+        // Supprimer les animations après leur fin
         setTimeout(() => {
             playerChoiceDisplay.classList.remove('fade-in');
             computerChoiceDisplay.classList.remove('fade-in');
@@ -356,14 +353,14 @@ function setupGame() {
     }
 }
 
-// Function to get computer's choice
+// Fonction pour obtenir un choix aléatoire de l’ordinateur
 function getComputerChoice() {
     const choices = ['rock', 'paper', 'scissors'];
     const randomIndex = Math.floor(Math.random() * 3);
     return choices[randomIndex];
 }
 
-// Function to determine the winner
+// Fonction pour déterminer le gagnant
 function determineWinner(playerChoice, computerChoice) {
     if (playerChoice === computerChoice) {
         return "draw";
@@ -382,21 +379,21 @@ function determineWinner(playerChoice, computerChoice) {
     }
 }
 
-// Function to display the result
+// Fonction pour afficher le résultat du match
 function showResult(playerChoice, computerChoice, result) {
     const resultDisplay = document.getElementById('result');
     const gameStatus = document.getElementById('game-status');
     const playerSide = document.querySelector('.player-side');
     const computerSide = document.querySelector('.computer-side');
     
-    // Format the choices to be more readable
+     // Mettre en majuscule la première lettre des choix
     const playerChoiceFormatted = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
     const computerChoiceFormatted = computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1);
     
-    // Display the choices
+    // Afficher les choix sélectionnés
     gameStatus.textContent = `You chose ${playerChoiceFormatted}, Computer chose ${computerChoiceFormatted}`;
     
-    // Display the result with appropriate styling
+    // Afficher le résultat avec un style approprié
     if (result === "draw") {
         resultDisplay.innerHTML = `<span class="result-draw">It's a draw!</span>`;
         resultDisplay.className = 'game-status result-animation';
@@ -404,25 +401,25 @@ function showResult(playerChoice, computerChoice, result) {
         resultDisplay.innerHTML = `<span class="result-win">You win!</span>`;
         resultDisplay.className = 'game-status result-animation';
         
-        // Highlight the winner
+        // Mettre en valeur le gagnant
         playerSide.classList.add('winner-highlight');
         computerSide.classList.add('loser-highlight');
         
-        // Play sound effect
+        // Jouer le son de victoire
         playSound('win');
     } else {
         resultDisplay.innerHTML = `<span class="result-lose">Computer wins!</span>`;
         resultDisplay.className = 'game-status result-animation';
         
-        // Highlight the winner
+        // // Mettre en valeur le gagnant
         computerSide.classList.add('winner-highlight');
         playerSide.classList.add('loser-highlight');
         
-        // Play sound effect
+        // Jouer le son de défaite
         playSound('lose');
     }
     
-    // Animate the streak counter if player won
+   // Animation du compteur de série de victoires si le joueur gagne
     if (result === "player") {
         const streakCounter = document.getElementById('streak-counter');
         streakCounter.classList.add('winner');
@@ -432,8 +429,7 @@ function showResult(playerChoice, computerChoice, result) {
     }
 }
 
-// Function to play sound effects (stub - would be implemented with actual sounds)
+// Fonction pour jouer les effets sonores
 function playSound(type) {
-    // This would play actual sounds if implemented
     console.log(`Playing ${type} sound effect`);
 }
