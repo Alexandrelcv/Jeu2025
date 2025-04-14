@@ -1,15 +1,15 @@
+// Quand le DOM est complètement chargé, on initialise les éléments essentiels du jeu.
 document.addEventListener('DOMContentLoaded', function() {
-    // Add CSS styles for new features
+     // Ajoute dynamiquement les styles CSS au document pour personnaliser l'apparence du jeu
     addStyles();
     
-    // Initialize database for storing game scores
     initDatabase();
     
     // Set up event listeners
     setupGame();
 });
 
-// Add CSS styles for the Rock Paper Scissors game
+//Fonction qui ajoute dynamiquement les styles CSS nécessaires pour l'affichage du jeu
 function addStyles() {
     const style = document.createElement('style');
     style.textContent = `
@@ -153,7 +153,7 @@ function addStyles() {
             animation: countdown 1s ease-in-out;
         }
     `;
-    document.head.appendChild(style);
+    document.head.appendChild(style);// Injecte les styles dans la tête du document HTML
 }
 
 // Initialize the database
@@ -179,7 +179,7 @@ function initDatabase() {
     updateScoreDisplay();
 }
 
-// Update score display from localStorage
+// // Fonction pour afficher les scores actuels du joueur et de l'ordinateur
 function updateScoreDisplay() {
     const scores = JSON.parse(localStorage.getItem("rspScores"));
     document.getElementById("player-score").textContent = scores.player;
@@ -187,28 +187,29 @@ function updateScoreDisplay() {
     document.getElementById("streak-counter").textContent = scores.streak;
 }
 
-// Function to update the score in localStorage
+// Fonction pour mettre à jour les scores dans la base de données SQL après chaque partie
 function updateScore(winner) {
     const scores = JSON.parse(localStorage.getItem("rspScores"));
     
     if (winner === "player") {
         scores.player += 1;
         scores.streak += 1;
-        // Update max streak if current streak is higher
+        // Met à jour le record si la partie actuelle est meilleure
         if (scores.streak > scores.maxStreak) {
             scores.maxStreak = scores.streak;
         }
     } else if (winner === "computer") {
         scores.computer += 1;
-        scores.streak = 0; // Reset streak on loss
+        scores.streak = 0; // Remetles compteurs à si perte
     }
     
     localStorage.setItem("rspScores", JSON.stringify(scores));
     updateScoreDisplay();
 }
 
-// Set up the game
+// Fonction pour configurer le jeu
 function setupGame() {
+    // Récupération des éléments du DOM nécessaires
     const choices = document.querySelectorAll('.choice');
     const result = document.getElementById('result');
     const gameStatus = document.getElementById('game-status');
