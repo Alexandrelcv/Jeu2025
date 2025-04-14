@@ -187,7 +187,7 @@ button:active {
     width: 100%;
 }
 
-/* Game specific styles */
+
 .game-board {
     display: grid;
     margin: 2.5rem auto;
@@ -419,7 +419,6 @@ canvas {
     box-shadow: 0 4px 8px rgba(67, 97, 238, 0.2);
 }
 
-/* Stats Summary */
 .stats-summary {
     margin: 2rem 0;
     padding: 1.2rem 1.5rem;
@@ -456,7 +455,7 @@ canvas {
     color: var(--primary-color);
 }
 
-/* Animations for games */
+
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.05); }
@@ -478,7 +477,7 @@ canvas {
     animation: pulse 1.5s infinite;
 }
 
-/* Game result animations */
+
 .result-animation {
     font-size: 2.2rem;
     font-weight: 700;
@@ -498,7 +497,7 @@ canvas {
     color: var(--warning-color);
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 600px) {
     .container {
         padding: 1.8rem;
